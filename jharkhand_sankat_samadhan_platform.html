@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sankat Samadhan | Disaster Management Platform</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            900: '#134e4a',
+                        },
+                        gov: {
+                            500: '#3b82f6',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        
+        /* Modal Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 flex h-screen overflow-hidden text-slate-800 font-sans">
+
+    <!-- Sidebar Navigation -->
+    <aside class="w-64 bg-slate-900 text-white flex flex-col transition-all duration-300 z-20">
+        <div class="p-6 flex items-center gap-3 border-b border-slate-800">
+            <i class="ph-fill ph-shield-check text-brand-500 text-3xl"></i>
+            <div>
+                <h1 class="text-lg font-bold leading-tight">Sankat<br>Samadhan</h1>
+            </div>
+        </div>
+        
+        <div class="p-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            Select Role
+        </div>
+
+        <nav class="flex-1 px-4 space-y-2" id="nav-menu">
+            <!-- Nav items injected by JS -->
+        </nav>
+
+        <div class="p-4 border-t border-slate-800 text-xs text-slate-500">
+            &copy; 2026 Govt of Jharkhand
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        
+        <!-- Header -->
+        <header class="bg-white border-b border-slate-200 h-16 flex items-center justify-between px-8 z-10 shrink-0">
+            <h2 id="header-title" class="text-xl font-semibold text-slate-800 flex items-center gap-2">
+                <!-- Title injected by JS -->
+            </h2>
+            <div class="flex items-center gap-4">
+                <span class="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200 shadow-inner flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    System Online
+                </span>
+                <button class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-300 transition">
+                    <i class="ph ph-bell"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Dynamic Content Container -->
+        <main id="main-content" class="flex-1 overflow-y-auto p-8 relative">
+            <!-- Content injected by JS -->
+        </main>
+
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Application Logic -->
+    <script>
+        // --- 1. STATE MANAGEMENT ---
+        const ROLES = {
+            CITIZEN: 'citizen',
+            STUDENT: 'student',
+            INDUSTRY: 'industry',
+            GOVT: 'govt'
+        };
+
+        const state = {
+            currentRole: ROLES.GOVT,
+            issues: [
+                {
+                    id: 1,
+                    title: 'Rising Water Levels in Subarnarekha River',
+                    type: 'Risk',
+                    severity: 'High',
+                    location: 'Ranchi',
+                    description: 'Water levels are nearing the danger mark near Namkum bridge due to continuous rainfall over the last 48 hours.',
+                    status: 'Open', // Open, Claimed, Supported, Resolved
+                    date: '2026-10-08',
+                    claimedBy: null,
+                    support: []
+                },
+                {
+                    id: 2,
+                    title: 'Damaged Embankment post-cyclone',
+                    type: 'Infrastructure',
+                    severity: 'Critical',
+                    location: 'East Singhbhum',
+                    description: 'Local embankment weakened. Needs immediate structural assessment to prevent flooding of adjoining villages.',
+                    status: 'Claimed',
+                    date: '2026-10-06',
+                    claimedBy: 'NIT Jamshedpur (Civil Eng Dept)',
+                    support: []
+                },
+                {
+                    id: 3,
+                    title: 'Community Hygiene Monitoring System',
+                    type: 'Post-Disaster Need',
+                    severity: 'Medium',
+                    location: 'Dhanbad',
+                    description: 'Need a localized software solution to track water-borne disease outbreaks in relief camps.',
+                    status: 'Supported',
+                    date: '2026-10-01',
+                    claimedBy: 'BIT Mesra (Computer Science)',
+                    support: [{ partner: 'Tata Consultancy Services', type: 'Mentorship & Cloud Credits' }]
+                }
+            ]
+        };
+
+        // --- 2. UTILITY FUNCTIONS ---
+        const generateId = () => Math.max(...state.issues.map(i => i.id), 0) + 1;
+        
+        const getSeverityColor = (severity) => {
+            switch(severity.toLowerCase()) {
+                case 'critical': return 'bg-red-100 text-red-700 border-red-200';
+                case 'high': return 'bg-orange-100 text-orange-700 border-orange-200';
+                case 'medium': return 'bg-yellow-100 text-yellow-700 border-yellow-200';
+                default: return 'bg-blue-100 text-blue-700 border-blue-200';
+            }
+        };
+
+        const getStatusColor = (status) => {
+            switch(status.toLowerCase()) {
+                case 'open': return 'bg-slate-100 text-slate-700 border-slate-200';
+                case 'claimed': return 'bg-indigo-100 text-indigo-700 border-indigo-200';
+                case 'supported': return 'bg-brand-100 text-brand-700 border-brand-200';
+                case 'resolved': return 'bg-green-100 text-green-700 border-green-200';
+                default: return 'bg-gray-100 text-gray-700 border-gray-200';
+            }
+        };
+
+        const showToast = (message, type = 'success') => {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const icon = type === 'success' ? 'ph-check-circle text-green-500' : 'ph-info text-blue-500';
+            const bg = 'bg-white border-l-4 ' + (type === 'success' ? 'border-green-500' : 'border-blue-500');
+
+            toast.className = `flex items-center gap-3 p-4 rounded shadow-lg border border-slate-200 pointer-events-auto animate-fade-in ${bg}`;
+            toast.innerHTML = `
+                <i class="ph ${icon} text-2xl"></i>
+                <p class="text-sm font-medium text-slate-800">${message}</p>
+            `;
+            
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        };
+
+        // --- 3. ACTIONS ---
+        const switchRole = (role) => {
+            state.currentRole = role;
+            render();
+        };
+
+        const submitCitizenReport = (event) => {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            
+            const newIssue = {
+                id: generateId(),
+                title: formData.get('title'),
+                type: formData.get('type'),
+                severity: formData.get('severity'),
+                location: formData.get('location'),
+                description: formData.get('description'),
+                status: 'Open',
+                date: new Date().toISOString().split('T')[0],
+                claimedBy: null,
+                support: []
+            };
+
+            state.issues.unshift(newIssue);
+            showToast('Disaster risk reported successfully. It is now visible to researchers.');
+            
+            // Switch to citizen view to see it
+            render();
+        };
+
+        const claimProject = (id) => {
+            const issue = state.issues.find(i => i.id === id);
+            if(issue) {
+                const institute = prompt("Enter your University/Institute Name (e.g., NIT Jamshedpur):");
+                if(institute) {
+                    issue.status = 'Claimed';
+                    issue.claimedBy = institute;
+                    showToast(`Project claimed by ${institute}. Industry partners can now view this.`);
+                    render();
+                }
+            }
+        };
+
+        const pledgeSupport = (id) => {
+            const issue = state.issues.find(i => i.id === id);
+            if(issue) {
+                const partner = prompt("Enter your Company Name:");
+                const supportType = prompt("Enter type of support (e.g., ₹50k Funding, Mentorship, Hardware):");
+                if(partner && supportType) {
+                    issue.status = 'Supported';
+                    issue.support.push({ partner, type: supportType });
+                    showToast(`Successfully pledged support for ${issue.title}.`);
+                    render();
+                }
+            }
+        };
+
+        // --- 4. RENDERERS ---
+        
+        // Navigation Renderer
+        const renderNav = () => {
+            const navMenu = document.getElementById('nav-menu');
+            const items = [
+                { id: ROLES.CITIZEN, icon: 'ph-users', label: 'Citizen Portal', desc: 'Report risks & needs' },
+                { id: ROLES.STUDENT, icon: 'ph-student', label: 'University Hub', desc: 'Claim capstone projects' },
+                { id: ROLES.INDUSTRY, icon: 'ph-buildings', label: 'Industry Partner', desc: 'Fund & mentor solutions' },
+                { id: ROLES.GOVT, icon: 'ph-bank', label: 'Govt. Oversight', desc: 'Track regional metrics' }
+            ];
+
+            navMenu.innerHTML = items.map(item => `
+                <button onclick="switchRole('${item.id}')" 
+                    class="w-full text-left p-3 rounded-lg transition-all duration-200 flex flex-col gap-1 group
+                    ${state.currentRole === item.id 
+                        ? 'bg-brand-600 shadow-md border border-brand-500' 
+                        : 'hover:bg-slate-800 border border-transparent'}">
+                    <div class="flex items-center gap-3">
+                        <i class="ph ${item.icon} text-xl ${state.currentRole === item.id ? 'text-white' : 'text-slate-400 group-hover:text-brand-400'}"></i>
+                        <span class="font-medium ${state.currentRole === item.id ? 'text-white' : 'text-slate-200'}">${item.label}</span>
+                    </div>
+                    <span class="text-[10px] ml-8 ${state.currentRole === item.id ? 'text-brand-100' : 'text-slate-500'}">${item.desc}</span>
+                </button>
+            `).join('');
+
+            const headerTitles = {
+                [ROLES.CITIZEN]: '<i class="ph-duotone ph-users text-brand-600"></i> Citizen Risk Reporting Portal',
+                [ROLES.STUDENT]: '<i class="ph-duotone ph-student text-indigo-600"></i> University Innovation Hub',
+                [ROLES.INDUSTRY]: '<i class="ph-duotone ph-buildings text-emerald-600"></i> Industry Partnership Dashboard',
+                [ROLES.GOVT]: '<i class="ph-duotone ph-bank text-gov-700"></i> Jharkhand Govt. Master Oversight'
+            };
+            document.getElementById('header-title').innerHTML = headerTitles[state.currentRole];
+        };
+
+        // UI Component: Issue Card
+        const buildIssueCard = (issue, actionsHtml) => `
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+                <div class="flex justify-between items-start mb-3">
+                    <div class="flex gap-2">
+                        <span class="text-xs px-2.5 py-1 rounded-full border font-medium ${getSeverityColor(issue.severity)}">
+                            ${issue.severity} Priority
+                        </span>
+                        <span class="text-xs px-2.5 py-1 rounded-full border font-medium ${getStatusColor(issue.status)}">
+                            ${issue.status}
+                        </span>
+                    </div>
+                    <span class="text-xs text-slate-400 flex items-center gap-1">
+                        <i class="ph ph-calendar-blank"></i> ${issue.date}
+                    </span>
+                </div>
+                
+                <h3 class="text-lg font-bold text-slate-800 mb-1">${issue.title}</h3>
+                
+                <div class="flex items-center gap-4 text-sm text-slate-500 mb-4">
+                    <span class="flex items-center gap-1"><i class="ph ph-map-pin"></i> ${issue.location}</span>
+                    <span class="flex items-center gap-1"><i class="ph ph-tag"></i> ${issue.type}</span>
+                </div>
+                
+                <p class="text-sm text-slate-600 mb-4 line-clamp-2">${issue.description}</p>
+                
+                ${issue.claimedBy ? `
+                    <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3 mb-4 text-sm">
+                        <p class="text-indigo-800"><span class="font-semibold">Claimed by:</span> ${issue.claimedBy}</p>
+                    </div>
+                ` : ''}
+
+                ${issue.support.length > 0 ? `
+                    <div class="bg-brand-50 border border-brand-100 rounded-lg p-3 mb-4 text-sm">
+                        <p class="text-brand-800 font-semibold mb-1">Industry Support:</p>
+                        <ul class="list-disc pl-4 text-brand-700 space-y-1">
+                            ${issue.support.map(s => `<li><b>${s.partner}</b>: ${s.type}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+
+                <div class="mt-auto border-t border-slate-100 pt-4 flex justify-end">
+                    ${actionsHtml}
+                </div>
+            </div>
+        `;
+
+        // Dashboard Renderers
+        const renderCitizenDashboard = () => {
+            const html = `
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Form Section -->
+                    <div class="lg:col-span-1">
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sticky top-0">
+                            <h3 class="text-lg font-bold mb-1">Report Emerging Risk</h3>
+                            <p class="text-sm text-slate-500 mb-6">Alert the authorities and local universities about a potential disaster risk or community need.</p>
+                            
+                            <form onsubmit="submitCitizenReport(event)" class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Issue Title</label>
+                                    <input required name="title" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none" placeholder="e.g. Rising river level">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Location</label>
+                                        <input required name="location" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="City/Village">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Severity</label>
+                                        <select name="severity" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                                            <option>Medium</option>
+                                            <option>High</option>
+                                            <option>Critical</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Category</label>
+                                    <select name="type" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                                        <option>Risk/Warning</option>
+                                        <option>Infrastructure Damage</option>
+                                        <option>Post-Disaster Need</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Detailed Description</label>
+                                    <textarea required name="description" rows="3" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="Provide details..."></textarea>
+                                </div>
+                                <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    <i class="ph ph-paper-plane-right"></i> Submit Report
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Feed Section -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-bold">Community Reports</h3>
+                            <span class="text-sm text-slate-500">Live feed from citizens</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            ${state.issues.map(issue => buildIssueCard(issue, `
+                                <button disabled class="text-sm font-medium text-slate-400 cursor-not-allowed">
+                                    Publicly Visible
+                                </button>
+                            `)).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            return html;
+        };
+
+        const renderStudentDashboard = () => {
+            const openIssues = state.issues.filter(i => i.status === 'Open');
+            const myIssues = state.issues.filter(i => i.status !== 'Open');
+
+            const html = `
+                <div class="mb-8 bg-indigo-900 rounded-2xl p-8 text-white flex justify-between items-center bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-2">Engineering & Social Science Capstone Hub</h2>
+                        <p class="text-indigo-200 max-w-2xl">Apply your academic knowledge to solve real-world disaster management challenges reported by local citizens in Jharkhand. Claim a project to attract industry funding.</p>
+                    </div>
+                    <div class="hidden md:flex gap-4">
+                        <div class="bg-indigo-800/50 p-4 rounded-xl text-center backdrop-blur-sm border border-indigo-700">
+                            <div class="text-3xl font-bold text-indigo-300">${openIssues.length}</div>
+                            <div class="text-xs text-indigo-200 uppercase tracking-wide">Open Challenges</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                    <!-- Available Challenges -->
+                    <section>
+                        <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                            <i class="ph-duotone ph-target text-indigo-500 text-xl"></i> 
+                            Available Challenges
+                        </h3>
+                        <div class="space-y-4">
+                            ${openIssues.length === 0 ? '<p class="text-slate-500 italic">No open challenges at the moment.</p>' : ''}
+                            ${openIssues.map(issue => buildIssueCard(issue, `
+                                <button onclick="claimProject(${issue.id})" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm">
+                                    Claim as Capstone
+                                </button>
+                            `)).join('')}
+                        </div>
+                    </section>
+
+                    <!-- Claimed Projects -->
+                    <section>
+                        <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                            <i class="ph-duotone ph-briefcase text-slate-500 text-xl"></i> 
+                            Active Student Projects
+                        </h3>
+                        <div class="space-y-4">
+                            ${myIssues.map(issue => buildIssueCard(issue, `
+                                <button class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition-colors">
+                                    View Repository
+                                </button>
+                            `)).join('')}
+                        </div>
+                    </section>
+                </div>
+            `;
+            return html;
+        };
+
+        const renderIndustryDashboard = () => {
+            const pendingSupport = state.issues.filter(i => i.status === 'Claimed');
+            const supported = state.issues.filter(i => i.status === 'Supported');
+
+            const html = `
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="lg:col-span-3 bg-emerald-800 rounded-2xl p-8 text-white relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')]"></div>
+                        <div class="relative z-10">
+                            <h2 class="text-2xl font-bold mb-2">CSR & Innovation Partnership</h2>
+                            <p class="text-emerald-100 max-w-2xl">Browse active technological and sociological solutions being developed by university students. Provide funding, hardware, or mentorship to accelerate disaster resilience in Jharkhand.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-center items-center shadow-sm">
+                        <i class="ph-duotone ph-handshake text-emerald-500 text-4xl mb-2"></i>
+                        <span class="text-3xl font-bold text-slate-800">${supported.length}</span>
+                        <span class="text-sm text-slate-500 text-center">Projects Supported by Industry</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                    <!-- Projects Seeking Support -->
+                    <section>
+                        <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-slate-800">
+                            <i class="ph-duotone ph-rocket-launch text-emerald-500 text-xl"></i> 
+                            Projects Seeking Support
+                        </h3>
+                        <div class="space-y-4">
+                            ${pendingSupport.length === 0 ? '<p class="text-slate-500 italic">No projects currently waiting for support.</p>' : ''}
+                            ${pendingSupport.map(issue => buildIssueCard(issue, `
+                                <button onclick="pledgeSupport(${issue.id})" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm flex items-center gap-2">
+                                    <i class="ph-bold ph-coins"></i> Pledge Support
+                                </button>
+                            `)).join('')}
+                        </div>
+                    </section>
+
+                    <!-- Funded/Supported Projects -->
+                    <section>
+                        <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-slate-800">
+                            <i class="ph-duotone ph-medal text-brand-500 text-xl"></i> 
+                            Actively Supported Projects
+                        </h3>
+                        <div class="space-y-4">
+                            ${supported.map(issue => buildIssueCard(issue, `
+                                <span class="text-sm font-medium text-brand-600 flex items-center gap-1">
+                                    <i class="ph-fill ph-check-circle"></i> Support Active
+                                </span>
+                            `)).join('')}
+                        </div>
+                    </section>
+                </div>
+            `;
+            return html;
+        };
+
+        const renderGovtDashboard = () => {
+            const stats = {
+                total: state.issues.length,
+                critical: state.issues.filter(i => i.severity === 'Critical').length,
+                claimed: state.issues.filter(i => i.status === 'Claimed' || i.status === 'Supported').length,
+                funded: state.issues.filter(i => i.status === 'Supported').length
+            };
+
+            const html = `
+                <!-- Stats Row -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm border-t-4 border-t-blue-500">
+                        <div class="text-slate-500 text-sm font-medium mb-1">Total Reported Risks</div>
+                        <div class="text-3xl font-bold text-slate-800">${stats.total}</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm border-t-4 border-t-red-500">
+                        <div class="text-slate-500 text-sm font-medium mb-1">Critical Vulnerabilities</div>
+                        <div class="text-3xl font-bold text-red-600">${stats.critical}</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm border-t-4 border-t-indigo-500">
+                        <div class="text-slate-500 text-sm font-medium mb-1">University Interventions</div>
+                        <div class="text-3xl font-bold text-slate-800">${stats.claimed}</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm border-t-4 border-t-brand-500">
+                        <div class="text-slate-500 text-sm font-medium mb-1">Industry Funded Solutions</div>
+                        <div class="text-3xl font-bold text-brand-600">${stats.funded}</div>
+                    </div>
+                </div>
+
+                <!-- Master Table -->
+                <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+                        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                            <i class="ph-duotone ph-map-trifold text-gov-700 text-xl"></i>
+                            Regional Vulnerability & Solution Registry
+                        </h3>
+                        <button class="text-sm bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg font-medium hover:bg-slate-50 flex items-center gap-2">
+                            <i class="ph-bold ph-download-simple"></i> Export CSV
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 text-xs uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                                    <th class="p-4 font-semibold">ID / Date</th>
+                                    <th class="p-4 font-semibold">Issue & Location</th>
+                                    <th class="p-4 font-semibold">Severity</th>
+                                    <th class="p-4 font-semibold">Status / Assigned</th>
+                                    <th class="p-4 font-semibold">Industry Support</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-sm">
+                                ${state.issues.map(issue => `
+                                    <tr class="hover:bg-slate-50 transition-colors">
+                                        <td class="p-4 text-slate-500">
+                                            <div class="font-medium">#${issue.id}</div>
+                                            <div class="text-xs">${issue.date}</div>
+                                        </td>
+                                        <td class="p-4">
+                                            <div class="font-bold text-slate-800">${issue.title}</div>
+                                            <div class="text-slate-500 flex items-center gap-1 mt-1"><i class="ph ph-map-pin"></i> ${issue.location}</div>
+                                        </td>
+                                        <td class="p-4">
+                                            <span class="px-2.5 py-1 rounded-full border text-xs font-medium ${getSeverityColor(issue.severity)}">
+                                                ${issue.severity}
+                                            </span>
+                                        </td>
+                                        <td class="p-4">
+                                            <span class="px-2.5 py-1 rounded-full border text-xs font-medium ${getStatusColor(issue.status)} mb-2 inline-block">
+                                                ${issue.status}
+                                            </span>
+                                            ${issue.claimedBy ? `<div class="text-xs text-indigo-700 font-medium"><i class="ph ph-student"></i> ${issue.claimedBy}</div>` : ''}
+                                        </td>
+                                        <td class="p-4">
+                                            ${issue.support.length > 0 
+                                                ? issue.support.map(s => `<div class="text-xs text-brand-700 font-medium mb-1"><i class="ph ph-buildings"></i> ${s.partner}</div>`).join('')
+                                                : '<span class="text-slate-400 text-xs">-</span>'
+                                            }
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            return html;
+        };
+
+        // Main Render Function
+        const render = () => {
+            renderNav();
+            const mainContent = document.getElementById('main-content');
+            
+            // Add a brief fade effect when switching
+            mainContent.style.opacity = '0';
+            
+            setTimeout(() => {
+                switch(state.currentRole) {
+                    case ROLES.CITIZEN: mainContent.innerHTML = renderCitizenDashboard(); break;
+                    case ROLES.STUDENT: mainContent.innerHTML = renderStudentDashboard(); break;
+                    case ROLES.INDUSTRY: mainContent.innerHTML = renderIndustryDashboard(); break;
+                    case ROLES.GOVT: mainContent.innerHTML = renderGovtDashboard(); break;
+                }
+                mainContent.style.transition = 'opacity 0.2s ease';
+                mainContent.style.opacity = '1';
+            }, 100);
+        };
+
+        // --- 5. INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            render();
+            // Show initial hint
+            setTimeout(() => {
+                showToast("Welcome! Try reporting an issue in the Citizen Portal, then switch to the University Hub to claim it.", 'info');
+            }, 1000);
+        });
+
+    </script>
+</body>
+</html>
