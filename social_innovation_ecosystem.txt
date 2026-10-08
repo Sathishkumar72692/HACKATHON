@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InnovateForGood - Social Innovation Ecosystem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        accent: {
+                            500: '#10b981', // Emerald for positive impact
+                            600: '#059669',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Styles for scrollbars and transitions */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hidden-section { display: none !important; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center cursor-pointer" onclick="app.showSection('landing')">
+                    <div class="flex-shrink-0 flex items-center gap-2">
+                        <div class="w-8 h-8 rounded bg-brand-500 text-white flex items-center justify-center font-bold text-xl">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
+                        <span class="font-bold text-xl text-gray-900">InnovateForGood</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span id="currentUserRole" class="text-sm font-medium text-brand-600 hidden md:block"></span>
+                    <button id="loginBtn" onclick="app.openRoleModal()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors">
+                        <i class="fas fa-sign-in-alt mr-2"></i> Switch Role / Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="mainContent" class="flex-grow flex flex-col relative">
+        
+        <!-- SECTION: Landing Page -->
+        <section id="section-landing" class="flex-grow flex flex-col fade-in">
+            <!-- Hero -->
+            <div class="bg-brand-900 text-white py-20 lg:py-32 relative overflow-hidden">
+                <div class="absolute inset-0 opacity-10">
+                    <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 100 100" fill="currentColor">
+                        <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                        </pattern>
+                        <rect width="100" height="100" fill="url(#grid)"/>
+                    </svg>
+                </div>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
+                        Bridging <span class="text-brand-500">Problems</span> with <span class="text-accent-500">Innovation</span>
+                    </h1>
+                    <p class="mt-4 max-w-2xl text-xl mx-auto text-brand-100 mb-10">
+                        An ecosystem connecting the public, students, academia, and industry to solve real-world societal challenges collaboratively.
+                    </p>
+                    <div class="flex justify-center gap-4">
+                        <button onclick="app.openRoleModal()" class="px-8 py-3 rounded-full bg-white text-brand-900 font-bold hover:bg-gray-100 transition shadow-lg">Get Started</button>
+                        <button onclick="document.getElementById('how-it-works').scrollIntoView()" class="px-8 py-3 rounded-full bg-transparent border border-white text-white font-bold hover:bg-white hover:text-brand-900 transition">How it Works</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="bg-white py-12 border-b border-gray-200">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                        <div>
+                            <div class="text-4xl font-bold text-brand-600 mb-2">124</div>
+                            <div class="text-sm text-gray-500 uppercase tracking-wide">Problems Solved</div>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-bold text-brand-600 mb-2">50+</div>
+                            <div class="text-sm text-gray-500 uppercase tracking-wide">Universities</div>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-bold text-brand-600 mb-2">30+</div>
+                            <div class="text-sm text-gray-500 uppercase tracking-wide">Industry Partners</div>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-bold text-accent-500 mb-2">₹1.2M</div>
+                            <div class="text-sm text-gray-500 uppercase tracking-wide">Funding Raised</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How it works -->
+            <div id="how-it-works" class="py-20 bg-gray-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl font-bold text-gray-900">The Innovation Journey</h2>
+                        <p class="mt-4 text-gray-600 max-w-2xl mx-auto">From identifying a local issue to deploying a funded, mentored solution.</p>
+                    </div>
+                    
+                    <div class="relative">
+                        <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-brand-100"></div>
+                        
+                        <div class="space-y-12">
+                            <!-- Step 1 -->
+                            <div class="flex flex-col md:flex-row items-center justify-center">
+                                <div class="md:w-1/2 flex justify-end md:pr-12 mb-6 md:mb-0">
+                                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 w-full max-w-md text-right relative">
+                                        <h3 class="text-xl font-bold text-gray-900 mb-2">1. Public Posts Problem</h3>
+                                        <p class="text-gray-600 text-sm">Citizens identify real-world issues (e.g., water shortage, waste management) and post them with details and media.</p>
+                                    </div>
+                                </div>
+                                <div class="w-12 h-12 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold z-10 border-4 border-white shadow">1</div>
+                                <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
+                            </div>
+                            
+                            <!-- Step 2 -->
+                            <div class="flex flex-col md:flex-row items-center justify-center">
+                                <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
+                                <div class="w-12 h-12 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold z-10 border-4 border-white shadow">2</div>
+                                <div class="md:w-1/2 flex justify-start md:pl-12 mt-6 md:mt-0">
+                                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 w-full max-w-md relative">
+                                        <h3 class="text-xl font-bold text-gray-900 mb-2">2. Students Ideate</h3>
+                                        <p class="text-gray-600 text-sm">University students browse problems, form teams, and submit innovative tech or social solutions.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 3 -->
+                            <div class="flex flex-col md:flex-row items-center justify-center">
+                                <div class="md:w-1/2 flex justify-end md:pr-12 mb-6 md:mb-0">
+                                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 w-full max-w-md text-right relative">
+                                        <h3 class="text-xl font-bold text-gray-900 mb-2">3. Professors Mentor</h3>
+                                        <p class="text-gray-600 text-sm">Academics review student proposals, provide technical guidance, and help refine the prototype.</p>
+                                    </div>
+                                </div>
+                                <div class="w-12 h-12 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold z-10 border-4 border-white shadow">3</div>
+                                <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
+                            </div>
+
+                            <!-- Step 4 -->
+                            <div class="flex flex-col md:flex-row items-center justify-center">
+                                <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
+                                <div class="w-12 h-12 rounded-full bg-brand-500 text-white flex items-center justify-center font-bold z-10 border-4 border-white shadow">4</div>
+                                <div class="md:w-1/2 flex justify-start md:pl-12 mt-6 md:mt-0">
+                                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 w-full max-w-md relative">
+                                        <h3 class="text-xl font-bold text-gray-900 mb-2">4. Industry Backs</h3>
+                                        <p class="text-gray-600 text-sm">Companies select promising projects, provide funding, hardware resources, or internships to scale the solution.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 5 -->
+                            <div class="flex flex-col md:flex-row items-center justify-center">
+                                <div class="md:w-1/2 flex justify-end md:pr-12 mb-6 md:mb-0">
+                                    <div class="bg-accent-50 p-6 rounded-xl shadow-sm border border-accent-200 w-full max-w-md text-right relative">
+                                        <h3 class="text-xl font-bold text-accent-600 mb-2">5. Real-World Impact</h3>
+                                        <p class="text-gray-700 text-sm">The prototype is implemented in the community, solving the original problem and generating measurable impact.</p>
+                                    </div>
+                                </div>
+                                <div class="w-12 h-12 rounded-full bg-accent-500 text-white flex items-center justify-center font-bold z-10 border-4 border-white shadow"><i class="fas fa-check"></i></div>
+                                <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DASHBOARD CONTAINER (Visible when logged in) -->
+        <section id="section-dashboard" class="flex-grow flex hidden-section bg-gray-100">
+            <!-- Sidebar Navigation -->
+            <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col">
+                <div class="p-6 border-b border-gray-100">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                            <i id="sidebarAvatar" class="fas fa-user text-gray-500 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 id="sidebarUserName" class="text-sm font-bold text-gray-900">User Name</h3>
+                            <p id="sidebarUserRole" class="text-xs text-gray-500 capitalize">Role</p>
+                        </div>
+                    </div>
+                </div>
+                <nav id="sidebarNav" class="flex-1 p-4 space-y-1 overflow-y-auto">
+                    <!-- Nav items injected by JS based on role -->
+                </nav>
+                <div class="p-4 border-t border-gray-100">
+                    <button onclick="app.logout()" class="flex items-center gap-3 w-full px-3 py-2 text-sm font-medium text-red-600 rounded-md hover:bg-red-50 transition">
+                        <i class="fas fa-sign-out-alt w-5 text-center"></i> Logout
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Main Dashboard Content Area -->
+            <div class="flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden">
+                <!-- Mobile Header -->
+                <div class="md:hidden bg-white border-b border-gray-200 p-4 flex justify-between items-center">
+                    <h2 id="mobileViewTitle" class="text-lg font-bold text-gray-800">Dashboard</h2>
+                    <button class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Dynamic Content Container -->
+                <main id="dashboardContent" class="flex-1 overflow-y-auto p-4 md:p-8">
+                    <!-- Views injected here -->
+                </main>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Role Selection Modal -->
+    <div id="roleModal" class="fixed inset-0 z-[100] hidden-section flex items-center justify-center">
+        <div class="absolute inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm" onclick="app.closeRoleModal()"></div>
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-3xl relative z-10 overflow-hidden fade-in mx-4">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Select Your Role</h2>
+                    <p class="text-sm text-gray-500 mt-1">Simulate entering the platform as different stakeholders.</p>
+                </div>
+                <button onclick="app.closeRoleModal()" class="text-gray-400 hover:text-gray-600 transition">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                <button onclick="app.login('public')" class="group p-4 border border-gray-200 rounded-xl hover:border-brand-500 hover:shadow-md transition text-left flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900">Public / Citizen</h3>
+                    <p class="text-xs text-gray-500 mt-1">Post local problems and track community impact.</p>
+                </button>
+
+                <button onclick="app.login('student')" class="group p-4 border border-gray-200 rounded-xl hover:border-brand-500 hover:shadow-md transition text-left flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900">Student</h3>
+                    <p class="text-xs text-gray-500 mt-1">Find problems, build teams, and propose solutions.</p>
+                </button>
+
+                <button onclick="app.login('professor')" class="group p-4 border border-gray-200 rounded-xl hover:border-brand-500 hover:shadow-md transition text-left flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900">Professor / Mentor</h3>
+                    <p class="text-xs text-gray-500 mt-1">Evaluate ideas, mentor teams, and provide guidance.</p>
+                </button>
+
+                <button onclick="app.login('company')" class="group p-4 border border-gray-200 rounded-xl hover:border-brand-500 hover:shadow-md transition text-left flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900">Industry / Company</h3>
+                    <p class="text-xs text-gray-500 mt-1">Fund projects, provide tech, hire talent.</p>
+                </button>
+
+                <button onclick="app.login('admin')" class="group p-4 border border-gray-200 rounded-xl hover:border-brand-500 hover:shadow-md transition text-left flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="font-bold text-gray-900">Platform Admin</h3>
+                    <p class="text-xs text-gray-500 mt-1">Monitor ecosystem health and manage users.</p>
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 z-50 pointer-events-none">
+        <div class="bg-gray-900 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3">
+            <i id="toastIcon" class="fas fa-info-circle text-brand-400"></i>
+            <span id="toastMessage" class="text-sm font-medium">Message</span>
+        </div>
+    </div>
+
+    <script>
+        // --- Mock Data Store ---
+        const db = {
+            problems: [
+                { id: 'P1', title: 'Severe Water Wastage in XYZ Village', desc: 'Broken communal pipes are leading to thousands of liters of water wasted daily. Need a monitoring system.', location: 'XYZ Village, District A', category: 'Environment', author: 'Rahul S. (Citizen)', status: 'In Progress', date: 'Oct 5, 2026', image: 'https://placehold.co/600x400/0ea5e9/ffffff?text=Water+Leak' },
+                { id: 'P2', title: 'Lack of Cold Storage for Local Farmers', desc: 'Farmers are losing 30% of perishable crops due to lack of affordable, localized cold storage facilities powered by renewable energy.', location: 'Mandi Area, District B', category: 'Agriculture', author: 'Local Farmer Union', status: 'Open', date: 'Oct 7, 2026', image: 'https://placehold.co/600x400/10b981/ffffff?text=Crops' },
+                { id: 'P3', title: 'Traffic Congestion near School Zone', desc: 'Need an automated smart traffic management system during peak hours near City High School.', location: 'City Center', category: 'Infrastructure', author: 'PTA Committee', status: 'Funded', date: 'Oct 1, 2026', image: 'https://placehold.co/600x400/f59e0b/ffffff?text=Traffic' }
+            ],
+            solutions: [
+                { id: 'S1', problemId: 'P1', title: 'IoT Smart Water Monitoring Network', team: 'Tech Innovators (Team ID: T1)', desc: 'Deploying cheap ESP32 based flow sensors to detect leaks and send SMS alerts to authorities.', status: 'Prototyping', requiredSupport: ['Hardware (Sensors)', 'Mentorship'], students: ['Amit', 'Priya'] },
+                { id: 'S2', problemId: 'P3', title: 'AI Camera based Traffic Light Control', team: 'Visionary Devs (Team ID: T2)', desc: 'Using OpenCV to count cars and dynamically adjust traffic light timings.', status: 'Evaluating', requiredSupport: ['GPU compute', 'Funding'], students: ['Raj', 'Simran'] }
+            ],
+            mentorships: [
+                { solutionId: 'S1', professor: 'Dr. Sharma', status: 'Active' }
+            ],
+            funding: [
+                { solutionId: 'S2', company: 'TechCorp India', amount: '₹50,000', status: 'Approved' }
+            ]
+        };
+
+        // --- View Templates based on Role ---
+        const views = {
+            public: {
+                nav: [
+                    { id: 'view-problems', icon: 'fa-list', label: 'Browse Problems' },
+                    { id: 'post-problem', icon: 'fa-plus-circle', label: 'Post a Problem' },
+                    { id: 'my-impact', icon: 'fa-chart-line', label: 'My Impact' }
+                ],
+                defaultView: 'view-problems'
+            },
+            student: {
+                nav: [
+                    { id: 'find-problems', icon: 'fa-search', label: 'Find Problems' },
+                    { id: 'my-solutions', icon: 'fa-lightbulb', label: 'My Solutions' },
+                    { id: 'team-collab', icon: 'fa-users', label: 'My Team' }
+                ],
+                defaultView: 'find-problems'
+            },
+            professor: {
+                nav: [
+                    { id: 'review-ideas', icon: 'fa-tasks', label: 'Review Ideas' },
+                    { id: 'my-mentees', icon: 'fa-user-graduate', label: 'Mentored Teams' }
+                ],
+                defaultView: 'review-ideas'
+            },
+            company: {
+                nav: [
+                    { id: 'discover-projects', icon: 'fa-rocket', label: 'Discover Projects' },
+                    { id: 'funded-projects', icon: 'fa-hand-holding-usd', label: 'Funded Projects' }
+                ],
+                defaultView: 'discover-projects'
+            },
+            admin: {
+                nav: [
+                    { id: 'platform-stats', icon: 'fa-chart-pie', label: 'Platform Stats' },
+                    { id: 'manage-users', icon: 'fa-users-cog', label: 'Manage Users' }
+                ],
+                defaultView: 'platform-stats'
+            }
+        };
+
+        // --- Main App Logic ---
+        const app = {
+            currentUser: null, // role string: 'public', 'student', etc.
+            currentView: null,
+
+            init() {
+                // Check if user was logged in (simple simulation)
+                const savedRole = localStorage.getItem('userRole');
+                if (savedRole) {
+                    this.login(savedRole, false);
+                } else {
+                    this.showSection('landing');
+                }
+            },
+
+            showSection(sectionId) {
+                document.getElementById('section-landing').classList.add('hidden-section');
+                document.getElementById('section-dashboard').classList.add('hidden-section');
+                document.getElementById(`section-${sectionId}`).classList.remove('hidden-section');
+                
+                if(sectionId === 'landing') {
+                    document.getElementById('loginBtn').classList.remove('hidden-section');
+                    document.getElementById('currentUserRole').classList.add('hidden');
+                }
+            },
+
+            openRoleModal() {
+                document.getElementById('roleModal').classList.remove('hidden-section');
+            },
+
+            closeRoleModal() {
+                document.getElementById('roleModal').classList.add('hidden-section');
+            },
+
+            login(role, showToastMsg = true) {
+                this.currentUser = role;
+                localStorage.setItem('userRole', role);
+                this.closeRoleModal();
+                this.setupDashboard(role);
+                this.showSection('dashboard');
+                
+                document.getElementById('loginBtn').classList.add('hidden-section');
+                const roleBadge = document.getElementById('currentUserRole');
+                roleBadge.classList.remove('hidden');
+                roleBadge.innerHTML = `<span class="bg-brand-100 text-brand-800 text-xs font-semibold px-2.5 py-0.5 rounded uppercase border border-brand-200">${role}</span>`;
+                
+                if(showToastMsg) this.showToast(`Logged in as ${role.toUpperCase()}`, 'success');
+            },
+
+            logout() {
+                this.currentUser = null;
+                localStorage.removeItem('userRole');
+                this.showSection('landing');
+                this.showToast('Logged out successfully');
+            },
+
+            showToast(message, type = 'info') {
+                const toast = document.getElementById('toast');
+                document.getElementById('toastMessage').innerText = message;
+                const icon = document.getElementById('toastIcon');
+                
+                icon.className = 'fas mr-2 ';
+                if(type === 'success') icon.className += 'fa-check-circle text-green-400';
+                else if(type === 'error') icon.className += 'fa-exclamation-circle text-red-400';
+                else icon.className += 'fa-info-circle text-brand-400';
+
+                toast.classList.remove('translate-y-20', 'opacity-0');
+                
+                setTimeout(() => {
+                    toast.classList.add('translate-y-20', 'opacity-0');
+                }, 3000);
+            },
+
+            setupDashboard(role) {
+                const config = views[role];
+                
+                // Set Sidebar Info
+                document.getElementById('sidebarUserName').innerText = role === 'public' ? 'Citizen User' : 
+                                                                    role === 'student' ? 'Student Dev' : 
+                                                                    role === 'professor' ? 'Dr. Smith' : 
+                                                                    role === 'company' ? 'TechCorp Rep' : 'Admin';
+                document.getElementById('sidebarUserRole').innerText = role;
+                
+                // Render Sidebar Nav
+                const navContainer = document.getElementById('sidebarNav');
+                navContainer.innerHTML = '';
+                
+                config.nav.forEach(item => {
+                    const btn = document.createElement('button');
+                    btn.className = 'w-full flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-brand-50 hover:text-brand-600 transition-colors nav-item';
+                    btn.onclick = () => this.loadView(item.id, role);
+                    btn.id = `nav-${item.id}`;
+                    btn.innerHTML = `<i class="fas ${item.icon} w-5 text-center text-gray-400 group-hover:text-brand-500"></i> ${item.label}`;
+                    navContainer.appendChild(btn);
+                });
+
+                // Load default view
+                this.loadView(config.defaultView, role);
+            },
+
+            loadView(viewId, role) {
+                this.currentView = viewId;
+                const contentArea = document.getElementById('dashboardContent');
+                contentArea.innerHTML = '<div class="flex justify-center items-center h-full"><i class="fas fa-spinner fa-spin text-brand-500 text-3xl"></i></div>';
+                
+                // Update active nav state
+                document.querySelectorAll('.nav-item').forEach(el => {
+                    el.classList.remove('bg-brand-50', 'text-brand-600');
+                    el.classList.add('text-gray-700');
+                });
+                const activeNav = document.getElementById(`nav-${viewId}`);
+                if(activeNav) {
+                    activeNav.classList.remove('text-gray-700');
+                    activeNav.classList.add('bg-brand-50', 'text-brand-600');
+                }
+
+                // Simulate network request
+                setTimeout(() => {
+                    this.renderContent(viewId, role, contentArea);
+                }, 300);
+            },
+
+            renderContent(viewId, role, container) {
+                let html = '';
+
+                // --- SHARED VIEWS ---
+                if (viewId === 'view-problems' || viewId === 'find-problems') {
+                    html = `
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900">Societal Problems</h2>
+                            <div class="flex gap-2">
+                                <select class="border border-gray-300 rounded-md text-sm p-2 bg-white">
+                                    <option>All Categories</option>
+                                    <option>Environment</option>
+                                    <option>Agriculture</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            ${db.problems.map(p => `
+                                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col hover:shadow-md transition">
+                                    <img src="${p.image}" class="w-full h-48 object-cover" alt="Problem Image">
+                                    <div class="p-5 flex-grow flex flex-col">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <span class="text-xs font-semibold px-2 py-1 bg-blue-100 text-blue-800 rounded uppercase">${p.category}</span>
+                                            <span class="text-xs text-gray-500">${p.date}</span>
+                                        </div>
+                                        <h3 class="text-lg font-bold text-gray-900 mb-2 leading-tight">${p.title}</h3>
+                                        <p class="text-gray-600 text-sm mb-4 flex-grow">${p.desc.substring(0, 100)}...</p>
+                                        <div class="flex items-center text-xs text-gray-500 mb-4">
+                                            <i class="fas fa-map-marker-alt mr-1"></i> ${p.location}
+                                        </div>
+                                        <div class="mt-auto pt-4 border-t border-gray-100 flex justify-between items-center">
+                                            <span class="text-sm font-medium ${p.status === 'Open' ? 'text-green-600' : 'text-amber-600'}">${p.status}</span>
+                                            ${role === 'student' ? `<button onclick="app.showToast('Opened Solution Draft editor', 'info')" class="text-sm bg-brand-500 text-white px-3 py-1.5 rounded hover:bg-brand-600">Solve This</button>` : 
+                                              `<button class="text-sm text-brand-600 hover:underline font-medium">View Details</button>`}
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+                
+                // --- PUBLIC SPECIFIC ---
+                else if (viewId === 'post-problem') {
+                    html = `
+                        <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+                            <h2 class="text-2xl font-bold text-gray-900 mb-6">Report a Societal Problem</h2>
+                            <form onsubmit="event.preventDefault(); app.mockSubmitProblem();" class="space-y-5">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Problem Title</label>
+                                    <input type="text" class="w-full border border-gray-300 rounded-md p-2.5 focus:ring-brand-500 focus:border-brand-500" placeholder="e.g., Unsafe drinking water in village" required>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                                        <select class="w-full border border-gray-300 rounded-md p-2.5 bg-white">
+                                            <option>Healthcare</option>
+                                            <option>Education</option>
+                                            <option>Environment</option>
+                                            <option>Infrastructure</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                                        <input type="text" class="w-full border border-gray-300 rounded-md p-2.5" placeholder="City/Village, State" required>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Detailed Description</label>
+                                    <textarea rows="4" class="w-full border border-gray-300 rounded-md p-2.5" placeholder="Describe the impact, who is affected, and current situation..." required></textarea>
+                                </div>
+                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 flex justify-center items-center flex-col bg-gray-50 cursor-pointer hover:bg-gray-100 transition">
+                                    <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                                    <span class="text-sm text-gray-600">Upload Photos/Videos (Optional)</span>
+                                </div>
+                                <button type="submit" class="w-full bg-brand-600 text-white font-medium py-3 rounded-md hover:bg-brand-700 transition">Submit Problem</button>
+                            </form>
+                        </div>
+                    `;
+                }
+
+                // --- STUDENT SPECIFIC ---
+                else if (viewId === 'my-solutions') {
+                    html = `
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">My Proposed Solutions</h2>
+                        <div class="space-y-4">
+                            ${db.solutions.map(s => {
+                                const relatedProblem = db.problems.find(p => p.id === s.problemId);
+                                return `
+                                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span class="text-xs font-semibold px-2 py-0.5 bg-purple-100 text-purple-800 rounded">Idea: ${s.title}</span>
+                                                <span class="text-xs text-gray-500">Team: ${s.team}</span>
+                                            </div>
+                                            <h3 class="text-lg font-bold text-gray-900 mt-2">Solving: ${relatedProblem.title}</h3>
+                                            <p class="text-gray-600 text-sm mt-2">${s.desc}</p>
+                                        </div>
+                                        <span class="px-3 py-1 bg-blue-50 text-blue-700 text-sm font-medium rounded-full border border-blue-200">${s.status}</span>
+                                    </div>
+                                    <div class="mt-4 pt-4 border-t border-gray-100 flex gap-4">
+                                        <div class="text-sm">
+                                            <span class="text-gray-500 block text-xs">Needs</span>
+                                            <span class="font-medium text-gray-800">${s.requiredSupport.join(', ')}</span>
+                                        </div>
+                                        <div class="text-sm ml-auto flex gap-2">
+                                            <button class="px-3 py-1.5 border border-gray-300 rounded text-gray-700 hover:bg-gray-50">Edit Idea</button>
+                                            <button class="px-3 py-1.5 bg-brand-50 text-brand-700 rounded hover:bg-brand-100">Update Progress</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+                }
+
+                // --- PROFESSOR SPECIFIC ---
+                else if (viewId === 'review-ideas') {
+                    html = `
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Student Ideas Pending Review</h2>
+                        <div class="grid gap-6">
+                            ${db.solutions.filter(s => s.status === 'Prototyping' || s.status === 'Evaluating').map(s => {
+                                const relatedProblem = db.problems.find(p => p.id === s.problemId);
+                                return `
+                                <div class="bg-white p-6 rounded-xl shadow-sm border border-l-4 border-l-purple-500 border-gray-200">
+                                    <div class="flex justify-between">
+                                        <div>
+                                            <h3 class="text-xl font-bold text-gray-900">${s.title}</h3>
+                                            <p class="text-sm text-gray-500 mt-1">Submitted by ${s.team} to solve: "${relatedProblem.title}"</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-700 mt-4 bg-gray-50 p-4 rounded-md border border-gray-100">${s.desc}</p>
+                                    <div class="mt-6 flex gap-3">
+                                        <button onclick="app.actionSimulator('Offer Mentorship', 'success')" class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 font-medium text-sm"><i class="fas fa-handshake mr-1"></i> Offer Mentorship</button>
+                                        <button onclick="app.actionSimulator('Feedback sent', 'info')" class="px-4 py-2 border border-gray-300 text-gray-700 rounded hover:bg-gray-50 font-medium text-sm"><i class="fas fa-comment mr-1"></i> Give Feedback</button>
+                                    </div>
+                                </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+                }
+
+                // --- COMPANY SPECIFIC ---
+                else if (viewId === 'discover-projects') {
+                    html = `
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900">Discover Promising Projects</h2>
+                            <div class="flex bg-white rounded-md border border-gray-300 p-1">
+                                <input type="text" placeholder="Search technology (e.g. IoT, AI)" class="px-3 py-1 outline-none text-sm w-64">
+                                <button class="text-gray-400 hover:text-brand-500 px-2"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            ${db.solutions.map(s => {
+                                const relatedProblem = db.problems.find(p => p.id === s.problemId);
+                                return `
+                                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex flex-col">
+                                    <div class="p-6">
+                                        <div class="flex justify-between items-start mb-4">
+                                            <div>
+                                                <span class="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs font-bold rounded mb-2">Verified Prototype</span>
+                                                <h3 class="text-lg font-bold text-gray-900 leading-tight">${s.title}</h3>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <p class="text-sm text-gray-500 font-medium">Solving Issue:</p>
+                                            <p class="text-sm text-gray-800 line-clamp-2">${relatedProblem.title}</p>
+                                        </div>
+                                        <p class="text-gray-600 text-sm mb-4 bg-gray-50 p-3 rounded border border-gray-100">${s.desc}</p>
+                                        
+                                        <div class="flex gap-2 flex-wrap mb-4">
+                                            ${s.requiredSupport.map(req => `<span class="px-2 py-1 bg-amber-50 text-amber-700 border border-amber-200 text-xs rounded-full"><i class="fas fa-exclamation-circle mr-1"></i>Needs ${req}</span>`).join('')}
+                                        </div>
+                                    </div>
+                                    <div class="mt-auto bg-gray-50 p-4 border-t border-gray-200 flex justify-between items-center">
+                                        <div class="text-sm text-gray-500"><i class="fas fa-users mr-1"></i> ${s.team}</div>
+                                        <button onclick="app.actionSimulator('Funding/Support Offered to Team', 'success')" class="px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded hover:bg-brand-700 transition shadow-sm">Provide Support</button>
+                                    </div>
+                                </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+                }
+
+                // --- ADMIN SPECIFIC ---
+                else if (viewId === 'platform-stats') {
+                    html = `
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Ecosystem Overview</h2>
+                        
+                        <!-- KPI Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                                <div class="text-gray-500 text-sm font-medium mb-1">Total Problems Posted</div>
+                                <div class="text-3xl font-bold text-gray-900">342</div>
+                                <div class="text-green-500 text-xs mt-2"><i class="fas fa-arrow-up"></i> 12% this month</div>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                                <div class="text-gray-500 text-sm font-medium mb-1">Active Student Teams</div>
+                                <div class="text-3xl font-bold text-brand-600">128</div>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                                <div class="text-gray-500 text-sm font-medium mb-1">Mentorship Matches</div>
+                                <div class="text-3xl font-bold text-purple-600">85</div>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                                <div class="text-gray-500 text-sm font-medium mb-1">Projects Funded/Deployed</div>
+                                <div class="text-3xl font-bold text-accent-600">42</div>
+                            </div>
+                        </div>
+
+                        <!-- Activity Table -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                            <div class="px-6 py-4 border-b border-gray-200">
+                                <h3 class="font-bold text-gray-800">Recent Ecosystem Activity</h3>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left text-gray-500">
+                                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3">Action</th>
+                                            <th class="px-6 py-3">Actor</th>
+                                            <th class="px-6 py-3">Target</th>
+                                            <th class="px-6 py-3">Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="bg-white border-b hover:bg-gray-50">
+                                            <td class="px-6 py-4 font-medium text-green-600"><span class="px-2 py-1 bg-green-100 rounded text-xs">Funding Secured</span></td>
+                                            <td class="px-6 py-4">TechCorp India</td>
+                                            <td class="px-6 py-4">Team Visionary Devs</td>
+                                            <td class="px-6 py-4">2 hours ago</td>
+                                        </tr>
+                                        <tr class="bg-white border-b hover:bg-gray-50">
+                                            <td class="px-6 py-4 font-medium text-purple-600"><span class="px-2 py-1 bg-purple-100 rounded text-xs">Mentor Joined</span></td>
+                                            <td class="px-6 py-4">Dr. Sharma</td>
+                                            <td class="px-6 py-4">IoT Water Project</td>
+                                            <td class="px-6 py-4">5 hours ago</td>
+                                        </tr>
+                                        <tr class="bg-white border-b hover:bg-gray-50">
+                                            <td class="px-6 py-4 font-medium text-blue-600"><span class="px-2 py-1 bg-blue-100 rounded text-xs">Problem Posted</span></td>
+                                            <td class="px-6 py-4">Citizen (Rahul S.)</td>
+                                            <td class="px-6 py-4">Water Wastage Issue</td>
+                                            <td class="px-6 py-4">1 day ago</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Fallback for placeholder views
+                else {
+                    html = `
+                        <div class="h-full flex flex-col items-center justify-center text-gray-500">
+                            <i class="fas fa-tools text-5xl mb-4 text-gray-300"></i>
+                            <h2 class="text-xl font-bold">Work in Progress</h2>
+                            <p class="mt-2">This view (${viewId}) is under construction.</p>
+                        </div>
+                    `;
+                }
+
+                container.innerHTML = `<div class="fade-in pb-10">${html}</div>`;
+            },
+
+            // Helper functions
+            mockSubmitProblem() {
+                this.showToast('Problem submitted successfully! Pending admin review.', 'success');
+                setTimeout(() => {
+                    this.loadView('view-problems', this.currentUser);
+                }, 1000);
+            },
+
+            actionSimulator(msg, type) {
+                this.showToast(msg, type);
+            }
+        };
+
+        // Initialize app on load
+        window.onload = () => {
+            app.init();
+        };
+    </script>
+</body>
+</html>

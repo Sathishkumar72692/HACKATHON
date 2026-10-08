@@ -64,217 +64,12 @@
         .animate-fade-in {
             animation: fadeIn 0.3s ease-out forwards;
         }
-
-        /* ===== Dynamic UI Upgrade ===== */
-        html { scroll-behavior: smooth; }
-        body {
-            background:
-                radial-gradient(circle at 10% 10%, rgba(20,184,166,.08), transparent 28%),
-                radial-gradient(circle at 90% 20%, rgba(59,130,246,.08), transparent 30%),
-                #f8fafc;
-        }
-        body::before {
-            content:"";
-            position:fixed;
-            inset:0;
-            pointer-events:none;
-            opacity:.32;
-            background-image:
-                linear-gradient(rgba(15,118,110,.035) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(15,118,110,.035) 1px, transparent 1px);
-            background-size:36px 36px;
-            mask-image:linear-gradient(to bottom, black, transparent 80%);
-            z-index:-1;
-        }
-        .glass {
-            background:rgba(255,255,255,.78);
-            backdrop-filter:blur(18px);
-            -webkit-backdrop-filter:blur(18px);
-        }
-        .sidebar-glow { position:relative; overflow:hidden; }
-        .sidebar-glow::before {
-            content:"";
-            position:absolute;
-            width:240px;height:240px;
-            border-radius:50%;
-            background:rgba(20,184,166,.16);
-            filter:blur(45px);
-            top:-100px;left:-100px;
-            pointer-events:none;
-        }
-        .sidebar-glow::after {
-            content:"";
-            position:absolute;
-            width:180px;height:180px;
-            border-radius:50%;
-            background:rgba(59,130,246,.12);
-            filter:blur(40px);
-            bottom:-80px;right:-80px;
-            pointer-events:none;
-        }
-        .nav-item-premium {
-            position:relative;
-            overflow:hidden;
-            transform:translateZ(0);
-        }
-        .nav-item-premium::after {
-            content:"";
-            position:absolute;
-            left:0;top:50%;
-            width:3px;height:0;
-            border-radius:99px;
-            background:#2dd4bf;
-            transform:translateY(-50%);
-            transition:.25s ease;
-        }
-        .nav-item-premium.active::after { height:65%; }
-        .nav-item-premium:hover { transform:translateX(3px); }
-        .page-enter { animation:pageEnter .45s cubic-bezier(.2,.8,.2,1); }
-        @keyframes pageEnter {
-            from { opacity:0; transform:translateY(12px) scale(.99); }
-            to { opacity:1; transform:none; }
-        }
-        .float-in { animation:floatIn .65s cubic-bezier(.2,.8,.2,1) both; }
-        @keyframes floatIn {
-            from { opacity:0; transform:translateY(18px); }
-            to { opacity:1; transform:none; }
-        }
-        .pulse-ring { position:relative; }
-        .pulse-ring::before {
-            content:"";
-            position:absolute; inset:-5px;
-            border:1px solid rgba(20,184,166,.25);
-            border-radius:inherit;
-            animation:ringPulse 2.2s ease-out infinite;
-        }
-        @keyframes ringPulse {
-            0% { opacity:.8; transform:scale(.98); }
-            100% { opacity:0; transform:scale(1.12); }
-        }
-        .premium-card {
-            transition:transform .28s ease, box-shadow .28s ease, border-color .28s ease;
-        }
-        .premium-card:hover {
-            transform:translateY(-5px);
-            box-shadow:0 20px 45px rgba(15,23,42,.10);
-            border-color:rgba(20,184,166,.25);
-        }
-        .stat-card {
-            position:relative;
-            overflow:hidden;
-        }
-        .stat-card::after {
-            content:"";
-            position:absolute;
-            width:110px;height:110px;
-            right:-35px;bottom:-45px;
-            border-radius:50%;
-            background:currentColor;
-            opacity:.055;
-        }
-        .shine {
-            position:relative;
-            overflow:hidden;
-        }
-        .shine::after {
-            content:"";
-            position:absolute;
-            top:-120%;left:-35%;
-            width:25%;height:300%;
-            transform:rotate(22deg);
-            background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);
-            animation:shine 5s ease-in-out infinite;
-        }
-        @keyframes shine {
-            0%,55% { left:-35%; }
-            75%,100% { left:130%; }
-        }
-        .hero-grid {
-            background-image:
-              radial-gradient(circle at 1px 1px, rgba(255,255,255,.13) 1px, transparent 0);
-            background-size:22px 22px;
-        }
-        .upload-zone {
-            border:1.5px dashed #cbd5e1;
-            transition:.25s ease;
-        }
-        .upload-zone:hover, .upload-zone.dragging {
-            border-color:#14b8a6;
-            background:#f0fdfa;
-            transform:translateY(-1px);
-        }
-        .map-preview {
-            min-height:150px;
-            background:
-                radial-gradient(circle at 28% 35%, rgba(20,184,166,.20), transparent 17%),
-                radial-gradient(circle at 72% 62%, rgba(59,130,246,.18), transparent 20%),
-                linear-gradient(135deg,#eff6ff,#ecfeff);
-            position:relative;
-            overflow:hidden;
-        }
-        .map-preview::before {
-            content:"";
-            position:absolute; inset:0;
-            opacity:.5;
-            background-image:
-              linear-gradient(35deg,transparent 47%,rgba(100,116,139,.18) 48%,rgba(100,116,139,.18) 50%,transparent 51%),
-              linear-gradient(120deg,transparent 47%,rgba(100,116,139,.14) 48%,rgba(100,116,139,.14) 50%,transparent 51%);
-            background-size:70px 55px,90px 70px;
-        }
-        .map-dot {
-            position:absolute;
-            width:13px;height:13px;border-radius:50%;
-            background:#ef4444;
-            box-shadow:0 0 0 7px rgba(239,68,68,.14),0 5px 15px rgba(239,68,68,.28);
-            animation:mapPulse 1.8s infinite;
-        }
-        @keyframes mapPulse {
-            0%,100% { transform:scale(.9); }
-            50% { transform:scale(1.15); }
-        }
-        .mobile-menu-btn { display:none; }
-        .mobile-overlay { display:none; }
-        @media (max-width: 900px) {
-            body { overflow:hidden; }
-            aside {
-                position:fixed !important;
-                left:0;top:0;bottom:0;
-                width:280px !important;
-                transform:translateX(-105%);
-                transition:transform .3s ease;
-                box-shadow:20px 0 60px rgba(15,23,42,.25);
-            }
-            aside.mobile-open { transform:translateX(0); }
-            .mobile-menu-btn {
-                display:flex;
-                width:40px;height:40px;
-                align-items:center;justify-content:center;
-                border-radius:12px;
-                background:#f1f5f9;
-                color:#334155;
-            }
-            .mobile-overlay {
-                position:fixed;inset:0;
-                background:rgba(15,23,42,.42);
-                backdrop-filter:blur(3px);
-                z-index:15;
-            }
-            .mobile-overlay.show { display:block; }
-            header { padding-left:14px !important; padding-right:14px !important; }
-            #main-content { padding:18px !important; }
-        }
-        @media (max-width: 560px) {
-            #header-title { font-size:15px; }
-            header .system-label { display:none; }
-            #main-content { padding:14px !important; }
-        }
-
     </style>
 </head>
-<body class="bg-slate-50 flex h-screen overflow-hidden text-slate-800 font-sans"><div id="mobile-overlay" class="mobile-overlay" onclick="closeMobileMenu()"></div>
+<body class="bg-slate-50 flex h-screen overflow-hidden text-slate-800 font-sans">
 
     <!-- Sidebar Navigation -->
-    <aside id="sidebar" class="sidebar-glow w-64 bg-slate-900 text-white flex flex-col transition-all duration-300 z-20">
+    <aside class="w-64 bg-slate-900 text-white flex flex-col transition-all duration-300 z-20">
         <div class="p-6 flex items-center gap-3 border-b border-slate-800">
             <i class="ph-fill ph-shield-check text-brand-500 text-3xl"></i>
             <div>
@@ -299,12 +94,12 @@
     <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
         
         <!-- Header -->
-        <header class="glass bg-white/85 border-b border-slate-200 h-16 flex items-center justify-between px-8 z-10 shrink-0">
-            <div class="flex items-center gap-3"><button class="mobile-menu-btn" onclick="openMobileMenu()" aria-label="Open menu"><i class="ph ph-list text-xl"></i></button><h2 id="header-title" class="text-xl font-semibold text-slate-800 flex items-center gap-2">
+        <header class="bg-white border-b border-slate-200 h-16 flex items-center justify-between px-8 z-10 shrink-0">
+            <h2 id="header-title" class="text-xl font-semibold text-slate-800 flex items-center gap-2">
                 <!-- Title injected by JS -->
-            </h2></div>
+            </h2>
             <div class="flex items-center gap-4">
-                <span class="system-label text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200 shadow-inner flex items-center gap-2">
+                <span class="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200 shadow-inner flex items-center gap-2">
                     <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
                     System Online
                 </span>
@@ -315,7 +110,7 @@
         </header>
 
         <!-- Dynamic Content Container -->
-        <main id="main-content" class="flex-1 overflow-y-auto p-8 relative"></main>
+        <main id="main-content" class="flex-1 overflow-y-auto p-8 relative">
             <!-- Content injected by JS -->
         </main>
 
@@ -335,7 +130,7 @@
         };
 
         const state = {
-            currentRole: ROLES.CITIZEN,
+            currentRole: ROLES.GOVT,
             issues: [
                 {
                     id: 1,
@@ -343,9 +138,7 @@
                     type: 'Risk',
                     severity: 'High',
                     location: 'Ranchi',
-                    gpsLocation: '23.3441, 85.3096',
                     description: 'Water levels are nearing the danger mark near Namkum bridge due to continuous rainfall over the last 48 hours.',
-                    photoUrl: null,
                     status: 'Open', // Open, Claimed, Supported, Resolved
                     date: '2026-10-08',
                     claimedBy: null,
@@ -357,9 +150,7 @@
                     type: 'Infrastructure',
                     severity: 'Critical',
                     location: 'East Singhbhum',
-                    gpsLocation: null,
                     description: 'Local embankment weakened. Needs immediate structural assessment to prevent flooding of adjoining villages.',
-                    photoUrl: null,
                     status: 'Claimed',
                     date: '2026-10-06',
                     claimedBy: 'NIT Jamshedpur (Civil Eng Dept)',
@@ -371,9 +162,7 @@
                     type: 'Post-Disaster Need',
                     severity: 'Medium',
                     location: 'Dhanbad',
-                    gpsLocation: null,
                     description: 'Need a localized software solution to track water-borne disease outbreaks in relief camps.',
-                    photoUrl: null,
                     status: 'Supported',
                     date: '2026-10-01',
                     claimedBy: 'BIT Mesra (Computer Science)',
@@ -408,16 +197,8 @@
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             
-            let icon = 'ph-info text-blue-500';
-            let bg = 'bg-white border-l-4 border-blue-500';
-            
-            if (type === 'success') {
-                icon = 'ph-check-circle text-green-500';
-                bg = 'bg-white border-l-4 border-green-500';
-            } else if (type === 'error') {
-                icon = 'ph-warning-circle text-red-500';
-                bg = 'bg-white border-l-4 border-red-500';
-            }
+            const icon = type === 'success' ? 'ph-check-circle text-green-500' : 'ph-info text-blue-500';
+            const bg = 'bg-white border-l-4 ' + (type === 'success' ? 'border-green-500' : 'border-blue-500');
 
             toast.className = `flex items-center gap-3 p-4 rounded shadow-lg border border-slate-200 pointer-events-auto animate-fade-in ${bg}`;
             toast.innerHTML = `
@@ -434,28 +215,6 @@
             }, 4000);
         };
 
-        const getGPSLocation = () => {
-            if (navigator.geolocation) {
-                showToast('Fetching location...', 'info');
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const input = document.getElementById('gpsLocation');
-                        if (input) {
-                            input.value = `${position.coords.latitude.toFixed(5)}, ${position.coords.longitude.toFixed(5)}`;
-                        }
-                        showToast('Location retrieved successfully.');
-                    },
-                    (error) => {
-                        showToast('Unable to retrieve location.', 'error');
-                    }
-                );
-            } else {
-                showToast('Geolocation is not supported by this browser.', 'error');
-            }
-        };
-        // Expose to window for inline onclick handler
-        window.getGPSLocation = getGPSLocation;
-
         // --- 3. ACTIONS ---
         const switchRole = (role) => {
             state.currentRole = role;
@@ -466,22 +225,13 @@
             event.preventDefault();
             const formData = new FormData(event.target);
             
-            // Handle image upload locally for preview
-            const photoFile = formData.get('photo');
-            let photoUrl = null;
-            if (photoFile && photoFile.size > 0) {
-                photoUrl = URL.createObjectURL(photoFile);
-            }
-            
             const newIssue = {
                 id: generateId(),
                 title: formData.get('title'),
                 type: formData.get('type'),
                 severity: formData.get('severity'),
                 location: formData.get('location'),
-                gpsLocation: formData.get('gpsLocation') || null,
                 description: formData.get('description'),
-                photoUrl: photoUrl,
                 status: 'Open',
                 date: new Date().toISOString().split('T')[0],
                 claimedBy: null,
@@ -491,7 +241,7 @@
             state.issues.unshift(newIssue);
             showToast('Disaster risk reported successfully. It is now visible to researchers.');
             
-            // Refresh view
+            // Switch to citizen view to see it
             render();
         };
 
@@ -536,9 +286,9 @@
 
             navMenu.innerHTML = items.map(item => `
                 <button onclick="switchRole('${item.id}')" 
-                    class="nav-item-premium w-full text-left p-3 rounded-xl transition-all duration-200 flex flex-col gap-1 group
+                    class="w-full text-left p-3 rounded-lg transition-all duration-200 flex flex-col gap-1 group
                     ${state.currentRole === item.id 
-                        ? 'active bg-brand-600/95 shadow-lg shadow-brand-900/20 border border-brand-400/40' 
+                        ? 'bg-brand-600 shadow-md border border-brand-500' 
                         : 'hover:bg-slate-800 border border-transparent'}">
                     <div class="flex items-center gap-3">
                         <i class="ph ${item.icon} text-xl ${state.currentRole === item.id ? 'text-white' : 'text-slate-400 group-hover:text-brand-400'}"></i>
@@ -559,7 +309,7 @@
 
         // UI Component: Issue Card
         const buildIssueCard = (issue, actionsHtml) => `
-            <div class="premium-card bg-white/90 backdrop-blur-sm p-5 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden group flex flex-col h-full">
+            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
                 <div class="flex justify-between items-start mb-3">
                     <div class="flex gap-2">
                         <span class="text-xs px-2.5 py-1 rounded-full border font-medium ${getSeverityColor(issue.severity)}">
@@ -574,23 +324,14 @@
                     </span>
                 </div>
                 
-                <h3 class="text-lg font-bold text-slate-800 mb-2">${issue.title}</h3>
+                <h3 class="text-lg font-bold text-slate-800 mb-1">${issue.title}</h3>
                 
-                ${issue.photoUrl ? `
-                    <div class="mb-4 rounded-lg overflow-hidden h-36 bg-slate-100 border border-slate-200">
-                        <img src="${issue.photoUrl}" alt="Evidence" class="w-full h-full object-cover">
-                    </div>
-                ` : ''}
-
-                <div class="flex flex-wrap items-center gap-4 text-sm text-slate-500 mb-4">
-                    <span class="flex items-center gap-1">
-                        <i class="ph ph-map-pin"></i> ${issue.location} 
-                        ${issue.gpsLocation ? `<span class="text-xs text-slate-400 ml-1">(${issue.gpsLocation})</span>` : ''}
-                    </span>
+                <div class="flex items-center gap-4 text-sm text-slate-500 mb-4">
+                    <span class="flex items-center gap-1"><i class="ph ph-map-pin"></i> ${issue.location}</span>
                     <span class="flex items-center gap-1"><i class="ph ph-tag"></i> ${issue.type}</span>
                 </div>
                 
-                <p class="text-sm text-slate-600 mb-4 line-clamp-3">${issue.description}</p>
+                <p class="text-sm text-slate-600 mb-4 line-clamp-2">${issue.description}</p>
                 
                 ${issue.claimedBy ? `
                     <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3 mb-4 text-sm">
@@ -616,9 +357,9 @@
         // Dashboard Renderers
         const renderCitizenDashboard = () => {
             const html = `
-                <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 float-in">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <!-- Form Section -->
-                    <div class="xl:col-span-1">
+                    <div class="lg:col-span-1">
                         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sticky top-0">
                             <h3 class="text-lg font-bold mb-1">Report Emerging Risk</h3>
                             <p class="text-sm text-slate-500 mb-6">Alert the authorities and local universities about a potential disaster risk or community need.</p>
@@ -629,28 +370,10 @@
                                     <input required name="title" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none" placeholder="e.g. Rising river level">
                                 </div>
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div class="col-span-2 sm:col-span-1">
-                                        <label class="block text-sm font-medium text-slate-700 mb-1">City/Area</label>
+                                    <div>
+                                        <label class="block text-sm font-medium text-slate-700 mb-1">Location</label>
                                         <input required name="location" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="City/Village">
                                     </div>
-                                    <div class="col-span-2 sm:col-span-1">
-                                        <label class="block text-sm font-medium text-slate-700 mb-1">Detailed Location (GPS)</label>
-                                        <div class="flex gap-2">
-                                            <input name="gpsLocation" id="gpsLocation" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="Lat, Lng">
-                                            <button type="button" onclick="getGPSLocation()" class="pulse-ring bg-slate-100 border border-slate-300 hover:bg-brand-50 hover:text-brand-700 text-slate-600 px-3 rounded-lg transition-colors" title="Get Current Location">
-                                                <i class="ph ph-crosshair text-lg"></i>
-                                            </button>
-                                        </div>
-                                        <div class="map-preview mt-3 rounded-xl border border-slate-200">
-                                            <div class="map-dot" style="left:30%;top:42%"></div>
-                                            <div class="absolute bottom-2 left-2 right-2 flex items-center justify-between text-[10px] text-slate-600">
-                                                <span class="bg-white/85 backdrop-blur px-2 py-1 rounded-lg border border-slate-200"><i class="ph ph-navigation-arrow mr-1"></i> Live location ready</span>
-                                                <span class="bg-white/85 backdrop-blur px-2 py-1 rounded-lg border border-slate-200">GPS</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-2 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-slate-700 mb-1">Severity</label>
                                         <select name="severity" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
@@ -659,27 +382,15 @@
                                             <option>Critical</option>
                                         </select>
                                     </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-slate-700 mb-1">Category</label>
-                                        <select name="type" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
-                                            <option>Risk/Warning</option>
-                                            <option>Infrastructure Damage</option>
-                                            <option>Post-Disaster Need</option>
-                                        </select>
-                                    </div>
                                 </div>
-                                
                                 <div>
-                                    <label class="block text-sm font-medium text-slate-700 mb-1">Evidence Photo</label>
-                                    <div class="upload-zone rounded-xl p-3 bg-slate-50/80">
-    <label class="flex items-center gap-3 cursor-pointer">
-        <span class="w-10 h-10 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center shrink-0"><i class="ph ph-camera text-xl"></i></span>
-        <span><span class="block text-sm font-semibold text-slate-700">Add disaster evidence</span><span class="block text-xs text-slate-500">JPG, PNG or WEBP • instant preview</span></span>
-        <input name="photo" type="file" accept="image/*" class="hidden">
-    </label>
-</div>
+                                    <label class="block text-sm font-medium text-slate-700 mb-1">Category</label>
+                                    <select name="type" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none">
+                                        <option>Risk/Warning</option>
+                                        <option>Infrastructure Damage</option>
+                                        <option>Post-Disaster Need</option>
+                                    </select>
                                 </div>
-
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1">Detailed Description</label>
                                     <textarea required name="description" rows="3" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 outline-none" placeholder="Provide details..."></textarea>
@@ -692,7 +403,7 @@
                     </div>
                     
                     <!-- Feed Section -->
-                    <div class="xl:col-span-2 space-y-6">
+                    <div class="lg:col-span-2 space-y-6">
                         <div class="flex items-center justify-between">
                             <h3 class="text-lg font-bold">Community Reports</h3>
                             <span class="text-sm text-slate-500">Live feed from citizens</span>
@@ -735,7 +446,7 @@
                             <i class="ph-duotone ph-target text-indigo-500 text-xl"></i> 
                             Available Challenges
                         </h3>
-                        <div class="grid grid-cols-1 gap-4">
+                        <div class="space-y-4">
                             ${openIssues.length === 0 ? '<p class="text-slate-500 italic">No open challenges at the moment.</p>' : ''}
                             ${openIssues.map(issue => buildIssueCard(issue, `
                                 <button onclick="claimProject(${issue.id})" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm">
@@ -751,7 +462,7 @@
                             <i class="ph-duotone ph-briefcase text-slate-500 text-xl"></i> 
                             Active Student Projects
                         </h3>
-                        <div class="grid grid-cols-1 gap-4">
+                        <div class="space-y-4">
                             ${myIssues.map(issue => buildIssueCard(issue, `
                                 <button class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition-colors">
                                     View Repository
@@ -769,7 +480,7 @@
             const supported = state.issues.filter(i => i.status === 'Supported');
 
             const html = `
-                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8 float-in">
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
                     <div class="lg:col-span-3 bg-emerald-800 rounded-2xl p-8 text-white relative overflow-hidden">
                         <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')]"></div>
                         <div class="relative z-10">
@@ -791,7 +502,7 @@
                             <i class="ph-duotone ph-rocket-launch text-emerald-500 text-xl"></i> 
                             Projects Seeking Support
                         </h3>
-                        <div class="grid grid-cols-1 gap-4">
+                        <div class="space-y-4">
                             ${pendingSupport.length === 0 ? '<p class="text-slate-500 italic">No projects currently waiting for support.</p>' : ''}
                             ${pendingSupport.map(issue => buildIssueCard(issue, `
                                 <button onclick="pledgeSupport(${issue.id})" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm flex items-center gap-2">
@@ -807,7 +518,7 @@
                             <i class="ph-duotone ph-medal text-brand-500 text-xl"></i> 
                             Actively Supported Projects
                         </h3>
-                        <div class="grid grid-cols-1 gap-4">
+                        <div class="space-y-4">
                             ${supported.map(issue => buildIssueCard(issue, `
                                 <span class="text-sm font-medium text-brand-600 flex items-center gap-1">
                                     <i class="ph-fill ph-check-circle"></i> Support Active
@@ -830,20 +541,20 @@
 
             const html = `
                 <!-- Stats Row -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 float-in">
-                    <div class="stat-card premium-card bg-white p-6 rounded-xl border border-slate-200 shadow-sm border-t-4 border-t-blue-500">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm border-t-4 border-t-blue-500">
                         <div class="text-slate-500 text-sm font-medium mb-1">Total Reported Risks</div>
                         <div class="text-3xl font-bold text-slate-800">${stats.total}</div>
                     </div>
-                    <div class="stat-card premium-card bg-white p-6 rounded-xl border border-slate-200 shadow-sm border-t-4 border-t-red-500">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm border-t-4 border-t-red-500">
                         <div class="text-slate-500 text-sm font-medium mb-1">Critical Vulnerabilities</div>
                         <div class="text-3xl font-bold text-red-600">${stats.critical}</div>
                     </div>
-                    <div class="stat-card premium-card bg-white p-6 rounded-xl border border-slate-200 shadow-sm border-t-4 border-t-indigo-500">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm border-t-4 border-t-indigo-500">
                         <div class="text-slate-500 text-sm font-medium mb-1">University Interventions</div>
                         <div class="text-3xl font-bold text-slate-800">${stats.claimed}</div>
                     </div>
-                    <div class="stat-card premium-card bg-white p-6 rounded-xl border border-slate-200 shadow-sm border-t-4 border-t-brand-500">
+                    <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm border-t-4 border-t-brand-500">
                         <div class="text-slate-500 text-sm font-medium mb-1">Industry Funded Solutions</div>
                         <div class="text-3xl font-bold text-brand-600">${stats.funded}</div>
                     </div>
@@ -880,10 +591,7 @@
                                         </td>
                                         <td class="p-4">
                                             <div class="font-bold text-slate-800">${issue.title}</div>
-                                            <div class="text-slate-500 flex flex-wrap items-center gap-1 mt-1">
-                                                <i class="ph ph-map-pin"></i> ${issue.location}${issue.gpsLocation ? `<span class="text-xs">(${issue.gpsLocation})</span>` : ''}
-                                            </div>
-                                            ${issue.photoUrl ? '<div class="text-xs text-brand-600 mt-1 flex items-center gap-1"><i class="ph ph-image"></i> Contains Media</div>' : ''}
+                                            <div class="text-slate-500 flex items-center gap-1 mt-1"><i class="ph ph-map-pin"></i> ${issue.location}</div>
                                         </td>
                                         <td class="p-4">
                                             <span class="px-2.5 py-1 rounded-full border text-xs font-medium ${getSeverityColor(issue.severity)}">
@@ -937,7 +645,7 @@
             render();
             // Show initial hint
             setTimeout(() => {
-                showToast("Welcome! Try reporting an issue with a photo and GPS location, then view it in the University Hub.", 'info');
+                showToast("Welcome! Try reporting an issue in the Citizen Portal, then switch to the University Hub to claim it.", 'info');
             }, 1000);
         });
 
