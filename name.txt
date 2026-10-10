@@ -205,7 +205,7 @@
     <script>
         // Global Application Configuration
         const AppConfig = {
-            API_KEY: '2t9Vp7kEqQk1w3XRg6xr',
+            API_KEY: 'cb1_4g34_1_5f5a1d327d5980536b15a0c4',
             // Add other external service configurations here
         };
 
@@ -871,10 +871,7 @@
                 }
                 // Default center (India approximation)
                 this.mapInstance = L.map('map-container').setView([20.5937, 78.9629], 5);
-                
-                // Note: If using a specific provider like Mapbox or MapTiler, replace the URL base below.
-                const tileUrl = `https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?apikey=${AppConfig.API_KEY}`;
-                L.tileLayer(tileUrl, {
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '© OpenStreetMap contributors'
                 }).addTo(this.mapInstance);
 
@@ -989,9 +986,7 @@
                 this.exploreMapInstance = L.map('explore-map', {zoomControl: false}).setView([20.5937, 78.9629], 5);
                 L.control.zoom({ position: 'bottomright' }).addTo(this.exploreMapInstance);
                 
-                // Note: Replace the URL base if your API key requires a specific tile provider endpoint.
-                const exploreTileUrl = `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?apikey=${AppConfig.API_KEY}`;
-                L.tileLayer(exploreTileUrl, {
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                     attribution: '© OpenStreetMap contributors, © CARTO'
                 }).addTo(this.exploreMapInstance);
 
